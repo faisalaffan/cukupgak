@@ -91,15 +91,15 @@ const verdictNote = computed(() => verdictNotes[props.result.verdict])
       <div class="grid grid-cols-3 gap-2 text-[13px]">
         <div class="bg-gray-100 dark:bg-gray-800 rounded-lg p-3">
           <p class="m-0 mb-0.5 text-gray-500 dark:text-gray-400">PPh 21</p>
-          <p class="m-0 font-medium">{{ fmt(result.deductions.pph21) }}</p>
+          <p class="m-0 font-medium text-gray-900 dark:text-gray-100">{{ fmt(result.deductions.pph21) }}</p>
         </div>
         <div class="bg-gray-100 dark:bg-gray-800 rounded-lg p-3">
           <p class="m-0 mb-0.5 text-gray-500 dark:text-gray-400">BPJS Kesehatan</p>
-          <p class="m-0 font-medium">{{ fmt(result.deductions.bpjsKes) }}</p>
+          <p class="m-0 font-medium text-gray-900 dark:text-gray-100">{{ fmt(result.deductions.bpjsKes) }}</p>
         </div>
         <div class="bg-gray-100 dark:bg-gray-800 rounded-lg p-3">
           <p class="m-0 mb-0.5 text-gray-500 dark:text-gray-400">BPJS Ketenagakerjaan</p>
-          <p class="m-0 font-medium">{{ fmt(result.deductions.bpjsTK) }}</p>
+          <p class="m-0 font-medium text-gray-900 dark:text-gray-100">{{ fmt(result.deductions.bpjsTK) }}</p>
         </div>
       </div>
     </div>
@@ -116,7 +116,7 @@ const verdictNote = computed(() => verdictNotes[props.result.verdict])
           <span class="text-gray-500 dark:text-gray-400">{{ expenseLabels[key as keyof Expenses] }}</span>
           <span class="text-gray-900 dark:text-gray-100">{{ fmt(value) }}</span>
         </div>
-        <div class="h-1.5 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+        <div class="h-1.5 bg-gray-200 dark:bg-gray-600 rounded-full overflow-hidden">
           <div
             class="h-full rounded-full"
             :style="{ width: barWidth(value) + '%', backgroundColor: barColors[key as keyof Expenses] }"
