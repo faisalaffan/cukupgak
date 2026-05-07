@@ -10,6 +10,11 @@ const DEFAULT_FORM: SalaryInput = {
   housing: 'kos_mid',
   food: 'mixed',
   lifestyle: 'normal',
+  cicilan: 0,
+  danaDarurat: 0,
+  tunjanganTransport: 0,
+  tunjanganMakan: 0,
+  bonusTahunan: 0,
 }
 
 export function useSalaryCalculator() {
@@ -30,7 +35,13 @@ export function useSalaryCalculator() {
       form.food,
       form.lifestyle,
     )
-    return computeResult(gross, form.salaryType, deductions, expenses)
+    return computeResult(gross, form.salaryType, deductions, expenses,
+      form.cicilan ?? 0,
+      form.danaDarurat ?? 0,
+      form.tunjanganTransport ?? 0,
+      form.tunjanganMakan ?? 0,
+      form.bonusTahunan ?? 0,
+    )
   })
 
   return { form, result }

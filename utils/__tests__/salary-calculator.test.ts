@@ -166,4 +166,27 @@ describe('computeResult', () => {
     expect(result.savingsRate).toBe(-Infinity)
     expect(result.verdict).toBe('Tidak layak')
   })
+
+  it('adds cicilan to total expense and reduces savings', () => {
+    const result = computeResult(8_000_000, 'gross', sampleDeductions, sampleExpenses, 2_000_000)
+    expect(result.totalExpense).toBe(7_100_000)
+    expect(result.savings).toBe(650_000)
+  })
+
+  it('subtracts tunjangan transport from total expense', () => {
+    const result = computeResult(8_000_000, 'gross', sampleDeductions, sampleExpenses, 0, 0, 500_000)
+    expect(result.totalExpense).toBe(4_600_000)
+  })
+
+  it('combines all advanced inputs correctly', () => {
+    const result = computeResult(8_000_000, 'gross', sampleDeductions, sampleExpenses, 1_000_000, 500_000, 400_000, 300_000)
+    expect(result.totalExpense).toBe(5_900_000)
+  })
+
+  it('bonus tahunan does not affect monthly savings', () => {
+    const without = computeResult(8_000_000, 'gross', sampleDeductions, sampleExpenses)
+    const withBonus = computeResult(8_000_000, 'gross', sampleDeductions, sampleExpenses, 0, 0, 0, 0, 20_000_000)
+    expect(withBonus.savings).toBe(without.savings)
+    expect(withBonus.verdict).toBe(without.verdict)
+  })
 })

@@ -105,8 +105,19 @@ export function getExpenses(
   }
 }
 
-export function computeResult(gross: number, salaryType: SalaryType, deductions: Deductions, expenses: Expenses): SalaryResult {
+export function computeResult(
+  gross: number,
+  salaryType: SalaryType,
+  deductions: Deductions,
+  expenses: Expenses,
+  cilican: number = 0,
+  danaDarurat: number = 0,
+  tunjanganTransport: number = 0,
+  tunjanganMakan: number = 0,
+  bonusTahunan: number = 0,
+): SalaryResult {
   const totalExpense = Object.values(expenses).reduce((a, b) => a + b, 0)
+    + cilican + danaDarurat - tunjanganTransport - tunjanganMakan
 
   if (gross <= 0) {
     return {
