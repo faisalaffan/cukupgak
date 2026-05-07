@@ -24,6 +24,7 @@
   },
   "dependencies": {
     "echarts": "^6.0.0",
+    "html-to-image": "^1.11.13",
     "vue-echarts": "^8.0.1"
   }
 }

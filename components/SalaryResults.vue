@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { SalaryResult, Expenses } from '~/types/salary'
+import ShareCard from '~/components/ShareCard.vue'
 
 const props = defineProps<{ result: SalaryResult }>()
 
@@ -128,5 +129,7 @@ const verdictNote = computed(() => verdictNotes[props.result.verdict])
     <p class="text-[11px] text-gray-400 dark:text-gray-500 mt-5 mb-0">
       Estimasi berdasarkan asumsi rata-rata biaya hidup 2024–2025. PPh 21 menggunakan tarif progresif PTKP standar. Tidak termasuk tanggungan cicilan, dana darurat, atau pengeluaran tak terduga.
     </p>
+
+    <ShareCard :result="result" class="mt-5" />
   </div>
 </template>
