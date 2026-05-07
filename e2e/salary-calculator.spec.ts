@@ -43,4 +43,40 @@ test.describe('Jakarta Salary Calculator', () => {
     await page.setViewportSize({ width: 375, height: 800 })
     await expect(page.locator('#salary')).toBeVisible()
   })
+
+  test('URL updates when salary changes', async ({ page }) => {
+    await page.fill('#salary', '12000000')
+    await page.waitForTimeout(500)
+    expect(page.url()).toContain('salary=12000000')
+  })
+
+  test('advanced inputs section is collapsible', async ({ page }) => {
+    const summary = page.getByText('Pengaturan lanjutan')
+    await expect(summary).toBeVisible()
+    await expect(page.locator('#cicilan')).not.toBeVisible()
+    await summary.click()
+    await expect(page.locator('#cicilan')).toBeVisible()
+  })
+
+  test('adding cicilan reduces savings', async ({ page }) => {
+    await page.getByText('Pengaturan lanjutan').click()
+    await page.fill('#cicilan', '3000000')
+    const savingsText = await page.getByText(/Sisa|Defisit/).last().textContent()
+    expect(savingsText).toBeTruthy()
+  })
+
+  test('compare page renders two calculators', async ({ page }) => {
+    await page.goto('/bandingkan')
+    await expect(page.locator('h1')).toHaveText('Bandingkan Dua Skenario')
+    await expect(page.locator('#salary')).toHaveCount(2)
+  })
+
+  test('compare page copy A to B works', async ({ page }) => {
+    await page.goto('/bandingkan')
+    const salaryInputs = page.locator('#salary')
+    await salaryInputs.first().fill('15000000')
+    await page.waitForTimeout(500)
+    await page.getByText('Salin ke B').click()
+    await expect(salaryInputs.nth(1)).toHaveValue('15000000')
+  })
 })
