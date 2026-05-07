@@ -47,6 +47,7 @@ const copyAToB = () => {
           </button>
         </div>
         <SalaryForm v-model="formA" />
+        <ExpenseChart :expenses="resultA.expenses" :take-home="resultA.takeHome" class="mb-4" />
         <SalaryResults :result="resultA" />
       </div>
 
@@ -54,6 +55,7 @@ const copyAToB = () => {
       <div class="bg-white dark:bg-gray-900 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
         <h2 class="text-sm font-medium text-gray-900 dark:text-gray-100 mb-4">Skenario B</h2>
         <SalaryForm v-model="formB" />
+        <ExpenseChart :expenses="resultB.expenses" :take-home="resultB.takeHome" class="mb-4" />
         <SalaryResults :result="resultB" />
       </div>
     </div>

@@ -8,5 +8,6 @@ useUrlSync(form)
 
 <template>
   <SalaryForm v-model="form" />
+  <ExpenseChart :expenses="result.expenses" :take-home="result.takeHome" class="mb-6" />
   <SalaryResults :result="result" />
 </template>
