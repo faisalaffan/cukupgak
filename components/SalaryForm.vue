@@ -6,6 +6,20 @@ const form = defineModel<SalaryInput>({ required: true })
 
 <template>
   <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-6">
+    <div class="md:col-span-2">
+      <label for="city" class="block text-[13px] text-gray-500 dark:text-gray-400 mb-1.5">Kota</label>
+      <select
+        id="city"
+        v-model="form.city"
+        class="w-full border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 text-sm text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
+      >
+        <option value="jakarta">Jakarta</option>
+        <option value="surabaya">Surabaya</option>
+        <option value="bandung">Bandung</option>
+        <option value="medan">Medan</option>
+        <option value="yogyakarta">Yogyakarta</option>
+      </select>
+    </div>
     <div>
       <label for="salary" class="block text-[13px] text-gray-500 dark:text-gray-400 mb-1.5">Gaji bruto (Rp/bulan)</label>
       <input

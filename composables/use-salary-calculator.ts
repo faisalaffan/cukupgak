@@ -10,6 +10,7 @@ const DEFAULT_FORM: SalaryInput = {
   housing: 'kos_mid',
   food: 'mixed',
   lifestyle: 'normal',
+  city: 'jakarta',
   cicilan: 0,
   danaDarurat: 0,
   tunjanganTransport: 0,
@@ -28,6 +29,7 @@ export function useSalaryCalculator() {
     const gross = form.salary
     const deductions = calcTax(gross, form.status)
     const expenses = getExpenses(
+      form.city,
       form.zone,
       form.status,
       form.transport,

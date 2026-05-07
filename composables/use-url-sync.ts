@@ -2,7 +2,7 @@ import type { SalaryInput } from '~/types/salary'
 
 const FORM_KEYS = [
   'salary', 'salaryType', 'zone', 'status', 'transport',
-  'housing', 'food', 'lifestyle',
+  'housing', 'food', 'lifestyle', 'city',
   'cicilan', 'danaDarurat', 'tunjanganTransport', 'tunjanganMakan', 'bonusTahunan',
 ] as const
 

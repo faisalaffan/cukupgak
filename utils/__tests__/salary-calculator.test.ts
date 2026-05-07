@@ -64,12 +64,12 @@ describe('calcTax', () => {
 
 describe('getExpenses', () => {
   it('returns zero housing for parents', () => {
-    const expenses = getExpenses('outer', 'single', 'public', 'parents', 'warung', 'frugal')
+    const expenses = getExpenses('jakarta', 'outer', 'single', 'public', 'parents', 'warung', 'frugal')
     expect(expenses.housing).toBe(0)
   })
 
   it('cheapest scenario: single + parents + warung + frugal + satellite + public', () => {
-    const expenses = getExpenses('satellite', 'single', 'public', 'parents', 'warung', 'frugal')
+    const expenses = getExpenses('jakarta', 'satellite', 'single', 'public', 'parents', 'warung', 'frugal')
     const total = Object.values(expenses).reduce((a, b) => a + b, 0)
     expect(expenses.housing).toBe(0)
     expect(expenses.transport).toBe(350_000)
@@ -81,7 +81,7 @@ describe('getExpenses', () => {
   })
 
   it('most expensive scenario: family2 + rent + resto + social + central + car', () => {
-    const expenses = getExpenses('central', 'family2', 'car', 'rent', 'resto', 'social')
+    const expenses = getExpenses('jakarta', 'central', 'family2', 'car', 'rent', 'resto', 'social')
     const total = Object.values(expenses).reduce((a, b) => a + b, 0)
     expect(expenses.housing).toBe(6_000_000)
     expect(expenses.transport).toBe(1_500_000)
@@ -90,10 +90,19 @@ describe('getExpenses', () => {
   })
 
   it('applies zone multiplier to food and utilities', () => {
-    const central = getExpenses('central', 'single', 'public', 'parents', 'warung', 'frugal')
-    const satellite = getExpenses('satellite', 'single', 'public', 'parents', 'warung', 'frugal')
+    const central = getExpenses('jakarta', 'central', 'single', 'public', 'parents', 'warung', 'frugal')
+    const satellite = getExpenses('jakarta', 'satellite', 'single', 'public', 'parents', 'warung', 'frugal')
     expect(central.food).toBeGreaterThan(satellite.food)
     expect(central.utilities).toBeGreaterThan(satellite.utilities)
+  })
+
+  it('applies city multiplier correctly', () => {
+    const jakarta = getExpenses('jakarta', 'outer', 'single', 'public', 'parents', 'warung', 'frugal')
+    const yogya = getExpenses('yogyakarta', 'outer', 'single', 'public', 'parents', 'warung', 'frugal')
+    // Yogyakarta should be cheaper than Jakarta
+    const totalJkt = Object.values(jakarta).reduce((a, b) => a + b, 0)
+    const totalYog = Object.values(yogya).reduce((a, b) => a + b, 0)
+    expect(totalYog).toBeLessThan(totalJkt)
   })
 })
 

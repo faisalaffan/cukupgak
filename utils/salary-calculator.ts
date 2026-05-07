@@ -1,4 +1,6 @@
 import type { Deductions, Expenses, MaritalStatus, Zone, TransportMode, HousingType, FoodStyle, Lifestyle, SalaryResult, SalaryType } from '~/types/salary'
+import { CITY_MULTIPLIERS } from './city-data'
+import type { City } from './city-data'
 
 const PTKP: Record<MaritalStatus, number> = {
   single: 54_000_000,
@@ -78,6 +80,7 @@ export function calcTax(gross: number, status: MaritalStatus): Deductions {
 }
 
 export function getExpenses(
+  city: City,
   zone: Zone,
   status: MaritalStatus,
   transport: TransportMode,
@@ -85,14 +88,15 @@ export function getExpenses(
   food: FoodStyle,
   lifestyle: Lifestyle,
 ): Expenses {
-  const housingCost = HOUSING_COST[housing]
-  const transportCost = TRANSPORT_COST[transport]
+  const m = CITY_MULTIPLIERS[city]
+  const housingCost = HOUSING_COST[housing] * m.housing
+  const transportCost = TRANSPORT_COST[transport] * m.transport
   const basePeople = PEOPLE_MULTIPLIER[status]
   const foodBase = FOOD_BASE[food]
-  const foodCost = foodBase * basePeople * ZONE_MULTIPLIER[zone]
+  const foodCost = foodBase * basePeople * ZONE_MULTIPLIER[zone] * m.food
   const zoneMult = ZONE_MULTIPLIER[zone]
-  const lifestyleCost = LIFESTYLE_COST[lifestyle]
-  const utilities = UTILITY_BASE[status] * zoneMult
+  const lifestyleCost = LIFESTYLE_COST[lifestyle] * m.lifestyle
+  const utilities = UTILITY_BASE[status] * zoneMult * m.utilities
   const personal = 200_000 * basePeople
 
   return {

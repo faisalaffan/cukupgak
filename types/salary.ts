@@ -12,6 +12,8 @@ export type FoodStyle = 'warung' | 'mixed' | 'resto'
 
 export type Lifestyle = 'frugal' | 'normal' | 'social'
 
+export type City = import('~/utils/city-data').City
+
 export type Verdict = 'Layak banget' | 'Layak' | 'Pas-pasan' | 'Mepet sekali' | 'Tidak layak'
 
 export interface SalaryInput {
@@ -23,6 +25,7 @@ export interface SalaryInput {
   housing: HousingType
   food: FoodStyle
   lifestyle: Lifestyle
+  city: City
   cicilan?: number
   danaDarurat?: number
   tunjanganTransport?: number
