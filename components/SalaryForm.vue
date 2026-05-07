@@ -107,4 +107,32 @@ const form = defineModel<SalaryInput>({ required: true })
       </select>
     </div>
   </div>
+    <details class="border-t border-gray-200 dark:border-gray-700 pt-4 mt-2">
+      <summary class="text-[13px] text-gray-500 dark:text-gray-400 cursor-pointer hover:text-gray-700 dark:hover:text-gray-300 select-none">
+        Pengaturan lanjutan
+      </summary>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-4">
+        <div>
+          <label for="cicilan" class="block text-[13px] text-gray-500 dark:text-gray-400 mb-1.5">Cicilan / bulan (KPR, motor, dll)</label>
+          <input id="cicilan" v-model.number="form.cicilan" type="number" step="100000" class="w-full border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 text-sm text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+        </div>
+        <div>
+          <label for="danaDarurat" class="block text-[13px] text-gray-500 dark:text-gray-400 mb-1.5">Dana darurat / bulan</label>
+          <input id="danaDarurat" v-model.number="form.danaDarurat" type="number" step="100000" class="w-full border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 text-sm text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+        </div>
+        <div>
+          <label for="tunjanganTransport" class="block text-[13px] text-gray-500 dark:text-gray-400 mb-1.5">Tunjangan transport dari kantor</label>
+          <input id="tunjanganTransport" v-model.number="form.tunjanganTransport" type="number" step="100000" class="w-full border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 text-sm text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+        </div>
+        <div>
+          <label for="tunjanganMakan" class="block text-[13px] text-gray-500 dark:text-gray-400 mb-1.5">Tunjangan makan dari kantor</label>
+          <input id="tunjanganMakan" v-model.number="form.tunjanganMakan" type="number" step="100000" class="w-full border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 text-sm text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+        </div>
+        <div class="md:col-span-2">
+          <label for="bonusTahunan" class="block text-[13px] text-gray-500 dark:text-gray-400 mb-1.5">Bonus tahunan (THR, bonus akhir tahun)</label>
+          <input id="bonusTahunan" v-model.number="form.bonusTahunan" type="number" step="1000000" class="w-full border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 text-sm text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+        </div>
+      </div>
+    </details>
 </template>
