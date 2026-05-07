@@ -1,5 +1,28 @@
 <script setup lang="ts">
-useHead({ title: 'Disclaimer — CukupGak' })
+useHead({
+  title: 'Disclaimer & Batasan — Kalkulator Gaji CukupGak',
+  meta: [
+    { name: 'description', content: 'Batasan dan disclaimer kalkulator kelayakan gaji CukupGak. Pahami sifat edukatif, asumsi, dan limitasi sebelum menggunakan kalkulator.' },
+    { property: 'og:title', content: 'Disclaimer — CukupGak' },
+    { property: 'og:description', content: 'Batasan dan disclaimer kalkulator kelayakan gaji Jakarta.' },
+    { property: 'og:type', content: 'website' },
+  ],
+  link: [{ rel: 'canonical', href: 'https://faisalaffan.github.io/disclaimer' }],
+  script: [
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        mainEntity: [
+          { '@type': 'Question', name: 'Apakah hasil kalkulator ini akurat?', acceptedAnswer: { '@type': 'Answer', text: 'Hasil bersifat estimasi berdasarkan rata-rata biaya hidup. Realita bisa berbeda ±20–30% tergantung lokasi spesifik dan gaya hidup individu. Tidak termasuk cicilan, dana darurat, atau pengeluaran tak terduga.' } },
+          { '@type': 'Question', name: 'Apakah CukupGak bisa menggantikan konsultasi keuangan?', acceptedAnswer: { '@type': 'Answer', text: 'Tidak. CukupGak adalah alat edukatif, bukan pengganti konsultasi dengan perencana keuangan, konsultan pajak, atau akuntan profesional.' } },
+          { '@type': 'Question', name: 'Apakah data gaji saya disimpan?', acceptedAnswer: { '@type': 'Answer', text: 'Tidak. Semua perhitungan dilakukan di browser Anda. Input gaji, profil hidup, dan hasil tidak pernah dikirim atau disimpan di server.' } },
+        ],
+      }),
+    },
+  ],
+})
 </script>
 
 <template>

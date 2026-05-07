@@ -13,6 +13,21 @@ if (gaId) {
     ],
   })
 }
+
+useHead({
+  script: [
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'Organization',
+        name: 'CukupGak',
+        url: 'https://faisalaffan.github.io',
+        description: 'Kalkulator kelayakan gaji di Jakarta. Estimasi apakah gajimu cukup untuk biaya hidup.',
+      }),
+    },
+  ],
+})
 </script>
 
 <template>

@@ -1,5 +1,28 @@
 <script setup lang="ts">
-useHead({ title: 'Kebijakan Privasi — CukupGak' })
+useHead({
+  title: 'Kebijakan Privasi — Kalkulator Gaji CukupGak',
+  meta: [
+    { name: 'description', content: 'Kebijakan privasi CukupGak. Tidak ada data pribadi yang dikumpulkan — semua kalkulasi dilakukan di browser Anda. Tidak ada cookie, tidak ada tracking.' },
+    { property: 'og:title', content: 'Kebijakan Privasi — CukupGak' },
+    { property: 'og:description', content: 'Kebijakan privasi kalkulator kelayakan gaji Jakarta. Tidak ada data dikumpulkan.' },
+    { property: 'og:type', content: 'website' },
+  ],
+  link: [{ rel: 'canonical', href: 'https://faisalaffan.github.io/privacy' }],
+  script: [
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        mainEntity: [
+          { '@type': 'Question', name: 'Apakah CukupGak mengumpulkan data pribadi?', acceptedAnswer: { '@type': 'Answer', text: 'Tidak. CukupGak tidak mengumpulkan, menyimpan, atau mengirimkan data pribadi apa pun. Semua kalkulasi dilakukan sepenuhnya di browser Anda.' } },
+          { '@type': 'Question', name: 'Apakah CukupGak menggunakan cookie?', acceptedAnswer: { '@type': 'Answer', text: 'Tidak. Situs ini tidak menggunakan cookie dan tidak melacak aktivitas pengguna.' } },
+          { '@type': 'Question', name: 'Bagaimana cara menghapus data saya?', acceptedAnswer: { '@type': 'Answer', text: 'Karena tidak ada data yang disimpan di server, tidak ada yang perlu dihapus. Preferensi tampilan (tema gelap/terang) tersimpan di localStorage browser Anda dan bisa dihapus melalui pengaturan browser.' } },
+        ],
+      }),
+    },
+  ],
+})
 </script>
 
 <template>

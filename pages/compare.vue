@@ -2,7 +2,16 @@
 import { useSalaryCalculator } from '~/composables/use-salary-calculator'
 import { useUrlSync } from '~/composables/use-url-sync'
 
-useHead({ title: 'Bandingkan Dua Skenario — CukupGak' })
+useHead({
+  title: 'Bandingkan Dua Skenario Gaji — CukupGak',
+  meta: [
+    { name: 'description', content: 'Bandingkan dua skenario gaji dan biaya hidup side-by-side. Lihat selisih take-home, pengeluaran, dan verdict antara dua profil berbeda.' },
+    { property: 'og:title', content: 'Bandingkan Dua Skenario Gaji — CukupGak' },
+    { property: 'og:description', content: 'Side-by-side comparison dua skenario gaji dan biaya hidup di Jakarta.' },
+    { property: 'og:type', content: 'website' },
+  ],
+  link: [{ rel: 'canonical', href: 'https://faisalaffan.github.io/bandingkan' }],
+})
 definePageMeta({ alias: '/bandingkan' })
 
 const { form: formA, result: resultA } = useSalaryCalculator()
