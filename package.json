@@ -1,0 +1,22 @@
+{
+  "name": "jakarta-salary-calculator",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "nuxi dev",
+    "build": "nuxi generate",
+    "generate": "nuxi generate",
+    "preview": "nuxi preview",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "npx playwright test"
+  },
+  "devDependencies": {
+    "@nuxtjs/tailwindcss": "^6.13.2",
+    "@playwright/test": "^1.52.0",
+    "nuxt": "^3.16.0",
+    "typescript": "^5.8.0",
+    "vitest": "^3.1.0",
+    "vue-tsc": "^2.2.0"
+  }
+}
