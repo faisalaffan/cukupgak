@@ -36,7 +36,7 @@ const isShareSupported = typeof navigator !== 'undefined' && !!navigator.share
   <div>
     <div
       ref="cardRef"
-      class="bg-white p-6 rounded-lg shadow w-[400px]"
+      class="bg-white p-6 rounded-lg shadow w-[400px] fixed -left-[9999px] top-0"
     >
       <p class="text-xs text-gray-400 mb-2">CukupGak — Kalkulator Kelayakan Gaji</p>
       <p class="text-lg font-semibold text-gray-900 mb-1">{{ result.verdict }}</p>
