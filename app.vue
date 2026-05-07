@@ -1,3 +1,20 @@
+<script setup lang="ts">
+const appConfig = useAppConfig()
+const gaId = appConfig.googleAnalyticsId
+
+if (gaId) {
+  useHead({
+    script: [
+      { src: `https://www.googletagmanager.com/gtag/js?id=${gaId}`, async: true },
+      {
+        innerHTML: `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','${gaId}');`,
+        type: 'text/javascript',
+      },
+    ],
+  })
+}
+</script>
+
 <template>
   <div class="min-h-screen bg-gray-50 dark:bg-gray-950 transition-colors">
     <AppNavbar />

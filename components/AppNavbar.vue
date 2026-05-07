@@ -3,7 +3,7 @@ const appConfig = useAppConfig()
 const colorMode = useColorMode()
 
 const toggleDark = () => {
-  colorMode.preference = colorMode.preference === 'dark' ? 'light' : 'dark'
+  colorMode.preference = colorMode.value === 'dark' ? 'light' : 'dark'
 }
 
 const navLinks = [
@@ -42,9 +42,9 @@ const route = useRoute()
       <button
         @click="toggleDark"
         class="p-2 rounded-md text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-        :aria-label="colorMode.preference === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'"
+        :aria-label="colorMode.value === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'"
       >
-        <span v-if="colorMode.preference === 'dark'" class="text-sm">☀️</span>
+        <span v-if="colorMode.value === 'dark'" class="text-sm">☀️</span>
         <span v-else class="text-sm">🌙</span>
       </button>
     </div>
