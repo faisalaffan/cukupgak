@@ -1,0 +1,250 @@
+<h2 class="sr-only">Kalkulator kelayakan gaji di Jakarta — masukkan gaji dan profil hidup, dapatkan estimasi surplus/defisit dan verdict.</h2>
+
+<div style="padding: 1rem 0;">
+
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 1.5rem;">
+  <div>
+    <label style="font-size: 13px; color: var(--color-text-secondary); display: block; margin-bottom: 6px;">Gaji bruto (Rp/bulan)</label>
+    <input type="number" id="salary" value="8000000" step="500000" style="width: 100%; box-sizing: border-box;" />
+  </div>
+  <div>
+    <label style="font-size: 13px; color: var(--color-text-secondary); display: block; margin-bottom: 6px;">Tipe gaji</label>
+    <select id="salaryType" style="width: 100%; box-sizing: border-box;">
+      <option value="gross">Bruto (sebelum pajak)</option>
+      <option value="net">Neto (sudah dipotong)</option>
+    </select>
+  </div>
+</div>
+
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 1.5rem;">
+  <div>
+    <label style="font-size: 13px; color: var(--color-text-secondary); display: block; margin-bottom: 6px;">Zona domisili</label>
+    <select id="zone" style="width: 100%; box-sizing: border-box;">
+      <option value="central">Jakarta Pusat / Selatan (premium)</option>
+      <option value="outer" selected>Jakarta Timur / Barat / Utara</option>
+      <option value="satellite">Bekasi / Depok / Tangerang / Bogor</option>
+    </select>
+  </div>
+  <div>
+    <label style="font-size: 13px; color: var(--color-text-secondary); display: block; margin-bottom: 6px;">Status</label>
+    <select id="status" style="width: 100%; box-sizing: border-box;">
+      <option value="single">Lajang</option>
+      <option value="married">Menikah (tanpa anak)</option>
+      <option value="family1">Menikah + 1 anak</option>
+      <option value="family2">Menikah + 2 anak</option>
+    </select>
+  </div>
+</div>
+
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 1.5rem;">
+  <div>
+    <label style="font-size: 13px; color: var(--color-text-secondary); display: block; margin-bottom: 6px;">Transportasi ke kantor</label>
+    <select id="transport" style="width: 100%; box-sizing: border-box;">
+      <option value="public">KRL / MRT / TransJakarta</option>
+      <option value="ojol">Ojol harian</option>
+      <option value="motor">Motor pribadi</option>
+      <option value="car">Mobil pribadi</option>
+    </select>
+  </div>
+  <div>
+    <label style="font-size: 13px; color: var(--color-text-secondary); display: block; margin-bottom: 6px;">Tempat tinggal</label>
+    <select id="housing" style="width: 100%; box-sizing: border-box;">
+      <option value="parents">Tinggal sama orang tua</option>
+      <option value="kos_budget">Kos budget (Rp 700rb–1,2jt)</option>
+      <option value="kos_mid" selected>Kos menengah (Rp 1,5jt–2,5jt)</option>
+      <option value="kos_premium">Kos premium (Rp 3jt–5jt)</option>
+      <option value="rent">Sewa apartemen (Rp 4jt–8jt)</option>
+    </select>
+  </div>
+</div>
+
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 1.5rem;">
+  <div>
+    <label style="font-size: 13px; color: var(--color-text-secondary); display: block; margin-bottom: 6px;">Gaya makan</label>
+    <select id="food" style="width: 100%; box-sizing: border-box;">
+      <option value="warung">Warung / warteg setiap hari</option>
+      <option value="mixed" selected>Mix (warung + sesekali resto)</option>
+      <option value="resto">Resto / GrabFood lebih sering</option>
+    </select>
+  </div>
+  <div>
+    <label style="font-size: 13px; color: var(--color-text-secondary); display: block; margin-bottom: 6px;">Gaya hidup</label>
+    <select id="lifestyle" style="width: 100%; box-sizing: border-box;">
+      <option value="frugal">Hemat ketat</option>
+      <option value="normal" selected>Normal (nongkrong sesekali)</option>
+      <option value="social">Aktif sosial / hobi</option>
+    </select>
+  </div>
+</div>
+
+<div style="border-top: 0.5px solid var(--color-border-tertiary); padding-top: 1.5rem; margin-top: 0.5rem;">
+  <div id="results"></div>
+</div>
+
+</div>
+
+<script>
+const fmt = n => 'Rp ' + Math.round(n).toLocaleString('id-ID');
+const pct = n => (n * 100).toFixed(1) + '%';
+
+function calcTax(gross, status) {
+  const ptkpMap = { single: 54000000, married: 58500000, family1: 63000000, family2: 67500000 };
+  const ptkp = ptkpMap[status];
+  const annual = gross * 12;
+  const pkp = Math.max(0, annual - ptkp);
+  let tax = 0;
+  if (pkp <= 60000000) tax = pkp * 0.05;
+  else if (pkp <= 250000000) tax = 3000000 + (pkp - 60000000) * 0.15;
+  else if (pkp <= 500000000) tax = 31500000 + (pkp - 250000000) * 0.25;
+  else tax = 94000000 + (pkp - 500000000) * 0.30;
+  const bpjsKes = Math.min(gross * 0.01, 120000);
+  const bpjsTK = gross * 0.02;
+  return { pph21: tax / 12, bpjsKes, bpjsTK };
+}
+
+function getExpenses(zone, status, transport, housing, food, lifestyle) {
+  const housingCost = { parents: 0, kos_budget: 950000, kos_mid: 2000000, kos_premium: 4000000, rent: 6000000 }[housing];
+  const transportCost = { public: 350000, ojol: 900000, motor: 500000, car: 1500000 }[transport];
+  const basePeople = { single: 1, married: 1.8, family1: 2.5, family2: 3.2 }[status];
+  const foodBase = { warung: 500000, mixed: 900000, resto: 1500000 }[food];
+  const foodCost = foodBase * basePeople;
+  const zoneMultiplier = { central: 1.3, outer: 1.0, satellite: 0.85 }[zone];
+  const lifestyleCost = { frugal: 200000, normal: 600000, social: 1200000 }[lifestyle];
+  const utilityBase = { single: 250000, married: 350000, family1: 450000, family2: 550000 }[status];
+  const utilities = utilityBase * zoneMultiplier;
+  const personal = 200000 * basePeople;
+  return {
+    housing: housingCost,
+    transport: transportCost,
+    food: foodCost * zoneMultiplier,
+    lifestyle: lifestyleCost,
+    utilities,
+    personal,
+  };
+}
+
+function render() {
+  const gross = parseFloat(document.getElementById('salary').value) || 0;
+  const salaryType = document.getElementById('salaryType').value;
+  const zone = document.getElementById('zone').value;
+  const status = document.getElementById('status').value;
+  const transport = document.getElementById('transport').value;
+  const housing = document.getElementById('housing').value;
+  const food = document.getElementById('food').value;
+  const lifestyle = document.getElementById('lifestyle').value;
+
+  let actualGross = gross;
+  const deductions = calcTax(actualGross, status);
+  let takeHome;
+  if (salaryType === 'net') {
+    takeHome = gross;
+    actualGross = gross / (1 - (deductions.pph21 / gross));
+  } else {
+    takeHome = gross - deductions.pph21 - deductions.bpjsKes - deductions.bpjsTK;
+  }
+
+  const expenses = getExpenses(zone, status, transport, housing, food, lifestyle);
+  const totalExpense = Object.values(expenses).reduce((a, b) => a + b, 0);
+  const savings_raw = takeHome - totalExpense;
+  const savingsRate = savings_raw / takeHome;
+
+  let verdict, verdictColor, verdictBg, verdictNote;
+  if (savingsRate >= 0.3) {
+    verdict = 'Layak banget'; verdictColor = 'var(--color-text-success)'; verdictBg = 'var(--color-background-success)';
+    verdictNote = 'Bisa nabung >30% take-home. Finansial aman untuk profil ini.';
+  } else if (savingsRate >= 0.15) {
+    verdict = 'Layak'; verdictColor = 'var(--color-text-success)'; verdictBg = 'var(--color-background-success)';
+    verdictNote = 'Cukup untuk hidup + nabung tipis. Perlu disiplin kalau ada kebutuhan mendadak.';
+  } else if (savingsRate >= 0.05) {
+    verdict = 'Pas-pasan'; verdictColor = 'var(--color-text-warning)'; verdictBg = 'var(--color-background-warning)';
+    verdictNote = 'Hampir impas. Risiko tinggi kalau ada pengeluaran tak terduga.';
+  } else if (savingsRate >= 0) {
+    verdict = 'Mepet sekali'; verdictColor = 'var(--color-text-warning)'; verdictBg = 'var(--color-background-warning)';
+    verdictNote = 'Hampir tidak ada ruang untuk savings atau darurat.';
+  } else {
+    verdict = 'Tidak layak'; verdictColor = 'var(--color-text-danger)'; verdictBg = 'var(--color-background-danger)';
+    verdictNote = 'Pengeluaran melebihi take-home. Perlu tambahan income atau kurangi gaya hidup.';
+  }
+
+  const barWidth = n => Math.min(100, Math.max(0, (n / takeHome) * 100)).toFixed(1);
+  const expenseLabels = {
+    housing: 'Tempat tinggal', transport: 'Transportasi', food: 'Makan',
+    lifestyle: 'Gaya hidup', utilities: 'Utilitas & listrik', personal: 'Kebutuhan pribadi'
+  };
+  const barColors = {
+    housing: '#378ADD', transport: '#1D9E75', food: '#EF9F27',
+    lifestyle: '#D4537E', utilities: '#7F77DD', personal: '#D85A30'
+  };
+
+  const expenseBars = Object.entries(expenses).map(([k, v]) => `
+    <div style="margin-bottom: 10px;">
+      <div style="display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 3px;">
+        <span style="color: var(--color-text-secondary);">${expenseLabels[k]}</span>
+        <span style="color: var(--color-text-primary);">${fmt(v)}</span>
+      </div>
+      <div style="height: 6px; background: var(--color-background-secondary); border-radius: 3px; overflow: hidden;">
+        <div style="height: 100%; width: ${barWidth(v)}%; background: ${barColors[k]}; border-radius: 3px;"></div>
+      </div>
+    </div>
+  `).join('');
+
+  const savingsAbs = Math.abs(savings_raw);
+  const savingsLabel = savings_raw >= 0 ? 'Sisa / potensi tabungan' : 'Defisit';
+
+  document.getElementById('results').innerHTML = `
+    <div style="background: ${verdictBg}; border-radius: var(--border-radius-lg); padding: 1rem 1.25rem; margin-bottom: 1.25rem; border: 0.5px solid var(--color-border-tertiary);">
+      <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 4px;">
+        <span style="font-size: 18px; font-weight: 500; color: ${verdictColor};">${verdict}</span>
+        <span style="font-size: 13px; color: ${verdictColor}; opacity: 0.8;">${pct(Math.max(savingsRate, 0))} savings rate</span>
+      </div>
+      <p style="margin: 0; font-size: 13px; color: var(--color-text-secondary);">${verdictNote}</p>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 1.5rem;">
+      <div style="background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 0.875rem;">
+        <p style="margin: 0 0 4px; font-size: 12px; color: var(--color-text-secondary);">Take-home / bulan</p>
+        <p style="margin: 0; font-size: 15px; font-weight: 500; color: var(--color-text-primary);">${fmt(takeHome)}</p>
+      </div>
+      <div style="background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 0.875rem;">
+        <p style="margin: 0 0 4px; font-size: 12px; color: var(--color-text-secondary);">Total pengeluaran</p>
+        <p style="margin: 0; font-size: 15px; font-weight: 500; color: var(--color-text-primary);">${fmt(totalExpense)}</p>
+      </div>
+      <div style="background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 0.875rem;">
+        <p style="margin: 0 0 4px; font-size: 12px; color: var(--color-text-secondary);">${savingsLabel}</p>
+        <p style="margin: 0; font-size: 15px; font-weight: 500; color: ${savings_raw >= 0 ? 'var(--color-text-success)' : 'var(--color-text-danger)'};">${fmt(savingsAbs)}</p>
+      </div>
+    </div>
+
+    <div style="margin-bottom: 1.25rem;">
+      <p style="font-size: 13px; color: var(--color-text-secondary); margin: 0 0 12px;">Rincian potongan gaji</p>
+      <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; font-size: 13px;">
+        <div style="background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 0.75rem;">
+          <p style="margin: 0 0 2px; color: var(--color-text-secondary);">PPh 21</p>
+          <p style="margin: 0; font-weight: 500;">${fmt(deductions.pph21)}</p>
+        </div>
+        <div style="background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 0.75rem;">
+          <p style="margin: 0 0 2px; color: var(--color-text-secondary);">BPJS Kesehatan</p>
+          <p style="margin: 0; font-weight: 500;">${fmt(deductions.bpjsKes)}</p>
+        </div>
+        <div style="background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 0.75rem;">
+          <p style="margin: 0 0 2px; color: var(--color-text-secondary);">BPJS Ketenagakerjaan</p>
+          <p style="margin: 0; font-weight: 500;">${fmt(deductions.bpjsTK)}</p>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <p style="font-size: 13px; color: var(--color-text-secondary); margin: 0 0 12px;">Breakdown pengeluaran</p>
+      ${expenseBars}
+    </div>
+
+    <p style="font-size: 11px; color: var(--color-text-tertiary); margin-top: 1.25rem; margin-bottom: 0;">Estimasi berdasarkan asumsi rata-rata biaya hidup 2024–2025. PPh 21 menggunakan tarif progresif PTKP standar. Tidak termasuk tanggungan cicilan, dana darurat, atau pengeluaran tak terduga.</p>
+  `;
+}
+
+['salary','salaryType','zone','status','transport','housing','food','lifestyle'].forEach(id => {
+  document.getElementById(id).addEventListener('change', render);
+  document.getElementById(id).addEventListener('input', render);
+});
+render();
+</script>
