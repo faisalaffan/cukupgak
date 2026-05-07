@@ -8,5 +8,14 @@ useHead({ title: 'Kalkulator Kelayakan Gaji Jakarta — CukupGak' })
     <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">Estimasi apakah gajimu cukup untuk biaya hidup di Jakarta dan sekitarnya.</p>
 
     <SalaryCalculator />
+
+    <div class="border-t border-gray-200 dark:border-gray-700 pt-5 mt-5 text-center">
+      <NuxtLink
+        to="/bandingkan"
+        class="inline-flex items-center gap-1.5 text-[13px] text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition-colors"
+      >
+        ⚖ Bandingkan dua skenario
+      </NuxtLink>
+    </div>
   </div>
 </template>
