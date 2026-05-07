@@ -104,7 +104,7 @@ useHead({ title: 'Kebijakan Privasi — CukupGak' })
       <h2 class="text-base font-medium text-gray-900 dark:text-gray-100 mt-4">10. Kontak</h2>
       <p>
         Untuk pertanyaan terkait privasi situs ini, Pengguna dapat menghubungi pemilik proyek melalui e-mail:
-        <a href="mailto:faisalaffan@gmail.com" class="text-blue-600 dark:text-blue-400 underline">faisalaffan@gmail.com</a>.
+        <a href="mailto:faisallionel@gmail.com" class="text-blue-600 dark:text-blue-400 underline">faisallionel@gmail.com</a>.
       </p>
     </div>
   </div>
