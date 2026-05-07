@@ -169,3 +169,16 @@ export function computeResult(
     verdict,
   }
 }
+
+export function reverseCalcGross(targetTakeHome: number, status: MaritalStatus): number {
+  if (targetTakeHome <= 0) return 0
+  let lo = 0
+  let hi = 200_000_000
+  for (let i = 0; i < 50; i++) {
+    const mid = (lo + hi) / 2
+    const { pph21, bpjsKes, bpjsTK } = calcTax(mid, status)
+    const takeHome = mid - pph21 - bpjsKes - bpjsTK
+    if (takeHome < targetTakeHome) { lo = mid } else { hi = mid }
+  }
+  return Math.ceil(hi)
+}

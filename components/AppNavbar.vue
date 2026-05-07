@@ -9,6 +9,7 @@ const toggleDark = () => {
 const navLinks = [
   { to: '/', label: 'Simulasi' },
   { to: '/bandingkan', label: 'Bandingkan' },
+  { to: '/negosiasi', label: 'Negosiasi' },
   { to: '/disclaimer', label: 'Disclaimer' },
   { to: '/privacy', label: 'Kebijakan Privasi' },
 ]

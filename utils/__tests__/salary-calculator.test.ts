@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { calcTax, getExpenses, computeResult } from '../salary-calculator'
+import { calcTax, getExpenses, computeResult, reverseCalcGross } from '../salary-calculator'
 import type { Deductions, Expenses } from '~/types/salary'
 
 describe('calcTax', () => {
@@ -197,5 +197,28 @@ describe('computeResult', () => {
     const withBonus = computeResult(8_000_000, 'gross', sampleDeductions, sampleExpenses, 0, 0, 0, 0, 20_000_000)
     expect(withBonus.savings).toBe(without.savings)
     expect(withBonus.verdict).toBe(without.verdict)
+  })
+})
+
+describe('reverseCalcGross', () => {
+  it('finds gross that yields at least target take-home', () => {
+    const gross = reverseCalcGross(7_000_000, 'single')
+    const { pph21, bpjsKes, bpjsTK } = calcTax(gross, 'single')
+    const takeHome = gross - pph21 - bpjsKes - bpjsTK
+    expect(takeHome).toBeGreaterThanOrEqual(7_000_000)
+    expect(takeHome).toBeLessThan(7_000_000 + 100_000)
+  })
+
+  it('returns 0 for zero target', () => {
+    expect(reverseCalcGross(0, 'single')).toBe(0)
+  })
+
+  it('returns 0 for negative target', () => {
+    expect(reverseCalcGross(-1000, 'single')).toBe(0)
+  })
+
+  it('handles high target for family status', () => {
+    const gross = reverseCalcGross(30_000_000, 'family2')
+    expect(gross).toBeGreaterThan(30_000_000)
   })
 })
