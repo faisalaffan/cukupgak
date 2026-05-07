@@ -26,7 +26,7 @@ const copyAToB = () => {
 </script>
 
 <template>
-  <div class="space-y-6">
+  <div class="max-w-7xl mx-auto space-y-6">
     <div class="flex items-center justify-between">
       <h1 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Bandingkan Dua Skenario</h1>
       <NuxtLink to="/" class="text-[13px] text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300">
