@@ -34,6 +34,18 @@ describe('calcTax', () => {
     expect(married.pph21).toBeLessThan(single.pph21)
   })
 
+  it('uses higher PTKP for family1 than single', () => {
+    const single = calcTax(6_000_000, 'single')
+    const family1 = calcTax(6_000_000, 'family1')
+    expect(family1.pph21).toBeLessThan(single.pph21)
+  })
+
+  it('uses higher PTKP for family2 than family1', () => {
+    const family1 = calcTax(6_000_000, 'family1')
+    const family2 = calcTax(6_000_000, 'family2')
+    expect(family2.pph21).toBeLessThan(family1.pph21)
+  })
+
   it('caps BPJS Kesehatan at Rp 120.000', () => {
     const result = calcTax(15_000_000, 'single')
     expect(result.bpjsKes).toBe(120_000)
@@ -114,8 +126,29 @@ describe('computeResult', () => {
   })
 
   it('verdict Tidak layak when expenses exceed take-home', () => {
-    const result = computeResult(8_000_000, 'gross', sampleDeductions, sampleExpenses)
-    expect(result.savings).toBe(2_650_000) // positive — let's fix: use high expense
+    const highExpenses: Expenses = {
+      housing: 3_000_000, transport: 1_000_000, food: 2_000_000,
+      lifestyle: 1_000_000, utilities: 500_000, personal: 500_000,
+    }
+    const result = computeResult(8_000_000, 'gross', sampleDeductions, highExpenses)
+    expect(result.savings).toBeLessThan(0)
+    expect(result.verdict).toBe('Tidak layak')
+  })
+
+  it('verdict Layak at 15-30% savings', () => {
+    const midDeductions: Deductions = { pph21: 1_300_000, bpjsKes: 100_000, bpjsTK: 100_000 }
+    const result = computeResult(8_000_000, 'gross', midDeductions, sampleExpenses)
+    expect(result.savingsRate).toBeGreaterThanOrEqual(0.15)
+    expect(result.savingsRate).toBeLessThan(0.30)
+    expect(result.verdict).toBe('Layak')
+  })
+
+  it('verdict Mepet sekali at 0-5% savings', () => {
+    const tightDeductions: Deductions = { pph21: 1_480_000, bpjsKes: 120_000, bpjsTK: 200_000 }
+    const result = computeResult(7_000_000, 'gross', tightDeductions, sampleExpenses)
+    expect(result.savingsRate).toBeGreaterThanOrEqual(0)
+    expect(result.savingsRate).toBeLessThan(0.05)
+    expect(result.verdict).toBe('Mepet sekali')
   })
 
   it('handles zero salary gracefully', () => {
