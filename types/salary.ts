@@ -23,6 +23,11 @@ export interface SalaryInput {
   housing: HousingType
   food: FoodStyle
   lifestyle: Lifestyle
+  cicilan?: number
+  danaDarurat?: number
+  tunjanganTransport?: number
+  tunjanganMakan?: number
+  bonusTahunan?: number
 }
 
 export interface Deductions {
