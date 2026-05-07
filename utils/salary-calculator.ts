@@ -106,6 +106,16 @@ export function getExpenses(
 }
 
 export function computeResult(gross: number, salaryType: SalaryType, deductions: Deductions, expenses: Expenses): SalaryResult {
+  const totalExpense = Object.values(expenses).reduce((a, b) => a + b, 0)
+
+  if (gross <= 0) {
+    return {
+      gross: 0, takeHome: 0, deductions: { pph21: 0, bpjsKes: 0, bpjsTK: 0 },
+      expenses, totalExpense, savings: -totalExpense, savingsRate: -Infinity,
+      verdict: 'Tidak layak',
+    }
+  }
+
   let actualGross = gross
   let takeHome: number
 
@@ -117,9 +127,8 @@ export function computeResult(gross: number, salaryType: SalaryType, deductions:
     takeHome = gross - deductions.pph21 - deductions.bpjsKes - deductions.bpjsTK
   }
 
-  const totalExpense = Object.values(expenses).reduce((a, b) => a + b, 0)
   const savings = takeHome - totalExpense
-  const savingsRate = savings / takeHome
+  const savingsRate = takeHome > 0 ? savings / takeHome : -Infinity
 
   let verdict: SalaryResult['verdict']
   if (savingsRate >= 0.3) {

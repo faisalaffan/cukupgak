@@ -151,10 +151,19 @@ describe('computeResult', () => {
     expect(result.verdict).toBe('Mepet sekali')
   })
 
-  it('handles zero salary gracefully', () => {
+  it('handles zero salary gracefully (gross mode)', () => {
     const result = computeResult(0, 'gross', { pph21: 0, bpjsKes: 0, bpjsTK: 0 }, sampleExpenses)
     expect(result.takeHome).toBe(0)
+    expect(result.gross).toBe(0)
     expect(result.savings).toBeLessThan(0)
+    expect(result.verdict).toBe('Tidak layak')
+  })
+
+  it('handles zero salary gracefully (net mode)', () => {
+    const result = computeResult(0, 'net', { pph21: 0, bpjsKes: 0, bpjsTK: 0 }, sampleExpenses)
+    expect(result.takeHome).toBe(0)
+    expect(result.gross).toBe(0)
+    expect(result.savingsRate).toBe(-Infinity)
     expect(result.verdict).toBe('Tidak layak')
   })
 })
