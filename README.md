@@ -21,7 +21,7 @@
 </p>
 
 <p align="center">
-  <a href="https://faisalaffan.github.io/cukupgak"><strong>🔗 Live Demo</strong></a>
+  <a href="https://cukupgak.faisalaffan.com"><strong>🔗 Live Demo</strong></a>
   &nbsp;·&nbsp;
   <a href="#-stack"><strong>Stack</strong></a>
   &nbsp;·&nbsp;
