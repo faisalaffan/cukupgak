@@ -1,6 +1,9 @@
 <script setup lang="ts">
 const appConfig = useAppConfig()
 const gaId = appConfig.googleAnalyticsId
+const route = useRoute()
+
+const isWidePage = computed(() => route.path === '/bandingkan' || route.path === '/compare')
 
 if (gaId) {
   useHead({
@@ -35,13 +38,17 @@ useHead({
     <AppNavbar />
 
     <main class="py-8 px-4">
-      <div class="max-w-2xl mx-auto">
+      <div :class="isWidePage ? 'max-w-6xl' : 'max-w-2xl'" class="mx-auto transition-all duration-300 ease-in-out">
         <NuxtPage />
       </div>
     </main>
 
-    <footer class="text-center text-xs text-gray-400 dark:text-gray-600 pb-8 px-4">
-      Dibuat oleh <a href="https://faisalaffan.github.io" class="underline hover:text-gray-500 dark:hover:text-gray-400" target="_blank" rel="noopener">Faisal Affan</a> &middot; Data estimasi 2024–2025
+    <footer class="text-center text-xs text-gray-400 dark:text-gray-600 pb-8 px-4 space-x-2">
+      <span>Dibuat oleh <a href="https://faisalaffan.github.io" class="underline hover:text-gray-500 dark:hover:text-gray-400" target="_blank" rel="noopener">Faisal Affan</a> &middot; Data estimasi 2024–2025</span>
+      <span>&middot;</span>
+      <NuxtLink to="/disclaimer" class="underline hover:text-gray-500 dark:hover:text-gray-400">Disclaimer</NuxtLink>
+      <span>&middot;</span>
+      <NuxtLink to="/privacy" class="underline hover:text-gray-500 dark:hover:text-gray-400">Kebijakan Privasi</NuxtLink>
     </footer>
   </div>
 </template>

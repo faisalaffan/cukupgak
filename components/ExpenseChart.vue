@@ -10,6 +10,10 @@ use([PieChart, TooltipComponent, LegendComponent, GraphicComponent, CanvasRender
 
 const props = defineProps<{ expenses: Expenses; takeHome: number }>()
 
+const colorMode = useColorMode()
+const textColor = computed(() => colorMode.value === 'dark' ? '#f3f4f6' : '#111827')
+const pieBorderColor = computed(() => colorMode.value === 'dark' ? '#111827' : '#ffffff')
+
 const fmt = (n: number) => 'Rp ' + Math.round(n / 1_000_000) + ' jt'
 
 const labels: Record<keyof Expenses, string> = {
@@ -42,9 +46,13 @@ const option = computed(() => ({
     radius: ['55%', '80%'],
     center: ['50%', '50%'],
     avoidLabelOverlap: false,
-    itemStyle: { borderRadius: 4, borderColor: 'transparent', borderWidth: 2 },
+    itemStyle: { borderRadius: 4, borderColor: pieBorderColor.value, borderWidth: 2 },
     label: { show: false },
-    emphasis: { label: { show: true, fontSize: 13, fontWeight: '500' } },
+    emphasis: {
+      scale: true,
+      scaleSize: 6,
+      label: { show: false }
+    },
     data: (Object.keys(props.expenses) as (keyof Expenses)[]).map((k) => ({
       name: labels[k],
       value: props.expenses[k],
@@ -59,7 +67,8 @@ const option = computed(() => ({
       text: fmt(props.takeHome),
       textAlign: 'center',
       fontSize: 13,
-      fontWeight: '500',
+      fontWeight: '600',
+      fill: textColor.value,
     },
   }],
 }))

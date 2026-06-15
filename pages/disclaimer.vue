@@ -26,8 +26,8 @@ useHead({
 </script>
 
 <template>
-  <div class="bg-white dark:bg-gray-900 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
-    <NuxtLink to="/" class="inline-block text-[13px] text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 mb-4">
+  <div class="bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-200/80 dark:border-gray-800/80 p-6 md:p-8">
+    <NuxtLink to="/" class="inline-block text-[13px] font-semibold text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 mb-4 transition-colors">
       ← Kembali ke simulasi
     </NuxtLink>
 

@@ -78,7 +78,7 @@ export function useUrlSync(
         } else {
           query = serializeForm(form)
         }
-        router.replace({ query })
+        router.replace({ path: route.path, query })
       }, 300)
     },
     { deep: true },
